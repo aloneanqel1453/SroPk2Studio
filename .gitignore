@@ -1,0 +1,8 @@
+﻿# build output: the application (bin\) and every intermediate file (obj\, CMake trees in obj\cmake\)
+bin/
+obj/
+# IDE state
+.vs/
+.cache/
+*.user
+CMakeUserPresets.json

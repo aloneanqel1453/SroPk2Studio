@@ -1,0 +1,647 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64"><Configuration>Release</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64"><Configuration>Debug</Configuration><Platform>x64</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>18.0</VCProjectVersion>
+    <ProjectGuid>{6A1E4C2B-5D7F-4B8E-9C31-0F2A7D5E8B14}</ProjectGuid>
+    <RootNamespace>SroPk2Studio</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <!-- bin\ holds only SroPk2Studio.exe (Debug: bin\Debug\); objects, pdb and logs stay in obj\. -->
+  <PropertyGroup>
+    <OutDir Condition="'$(Configuration)'=='Release'">$(SolutionDir)bin\</OutDir>
+    <OutDir Condition="'$(Configuration)'=='Debug'">$(SolutionDir)bin\Debug\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)\</IntDir>
+    <TargetName>SroPk2Studio</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <AdditionalOptions>/utf-8 /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <!-- BAK and BAK-2 share file names (Pk2Archive.cpp, KeyFinder.cpp, Efp.cpp ...): one object folder per source folder. -->
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+      <PreprocessorDefinitions>_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
+      <AdditionalDependencies>d2d1.lib;dwrite.lib;dwmapi.lib;ole32.lib;oleaut32.lib;shell32.lib;shlwapi.lib;user32.lib;gdi32.lib;comdlg32.lib;d3d11.lib;dxgi.lib;d3dcompiler.lib;winmm.lib;bcrypt.lib;crypt32.lib;advapi32.lib;windowscodecs.lib;msimg32.lib;opengl32.lib;glu32.lib;comctl32.lib;version.lib;psapi.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Manifest>
+      <AdditionalManifestFiles>src\app.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link><OptimizeReferences>true</OptimizeReferences><EnableCOMDATFolding>true</EnableCOMDATFolding></Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\app.cpp" />
+    <ClCompile Include="src\bak\core\AssetCipherAes.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\AssetCipherGopro.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\AssetCipherSailor.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\AssetCipherSbox.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\AssetCipherVsro.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\AssetCrypt.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\Blowfish.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\Config.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\FolderArchive.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\KeyFinder.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\KeyRing.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\L33tPayloadKey.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\Pk2Archive.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\Pk2v2Archive.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\Pk2v2Crypto.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\Pk2v2Zstd.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\SiblingArchives.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\VpArchive.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\VpCrypto.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\core\zstd.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_WINDOWS;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_WINDOWS;WIN32;_DEBUG</PreprocessorDefinitions>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\AssetDeps.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\AvatarSet.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\Ban.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\Bms.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\Bmt.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\Bsk.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\Bsr.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\DataTableDeps.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\Ddj.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\DdsDecode.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\Efp.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\FormatId.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\Formats_stubs.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\MapFiles.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\Nif2dt.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\formats\TextFile.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\fx\EffectScene.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\preview\PreviewEngine.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\render\Image.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\render\ImageIO.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\render\MeshView.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\render\Raster.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak\render\SroPose.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;SRO_CHECK_SOURCE_ENCODING;UNICODE;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak_bridge.cpp" />
+    <ClCompile Include="src\bak2\client\Catalog.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\client\ClientInfo.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\client\KeyFinder.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\client\Pk2Archive.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\client\Pk2Crypto.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\client\Vfs.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\Client.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\Engine.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\List.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\Ops.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\Package.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\Pk2.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\SeModel.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\SkillCrypt.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\Source.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\Studio.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\Table.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\Text.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\TextDiff.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\core\Validate.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\ddj\DdjCodec.cpp" />
+    <ClCompile Include="src\bak2\ddj\Dxt.cpp" />
+    <ClCompile Include="src\bak2\ddj\IconImport.cpp" />
+    <ClCompile Include="src\bak2\ddj\ImageIo.cpp" />
+    <ClCompile Include="src\bak2\ddj\Portrait.cpp" />
+    <ClCompile Include="src\bak2\editor\EdAssets.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\editor\EdCompare.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\editor\EdDoc.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\editor\EdHealth.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\editor\EdHistory.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\editor\EdLang.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\editor\EdSchema.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\editor\EdTemplates.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\editor\EdValidate.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\editor\EdVorbis.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_UNICODE;_WINDOWS;NOMINMAX;UNICODE;WIN32;_DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\efpwrite\EfpDoc.cpp" />
+    <ClCompile Include="src\bak2\efpwrite\EfpEdit.cpp" />
+    <ClCompile Include="src\bak2\efpwrite\EfpTexture.cpp" />
+    <ClCompile Include="src\bak2\efpwrite\EfpVariant.cpp" />
+    <ClCompile Include="src\bak2\render\Efp.cpp" />
+    <ClCompile Include="src\bak2\render\EfpSim.cpp" />
+    <ClCompile Include="src\bak2\render\EfxDraw.cpp" />
+    <ClCompile Include="src\bak2\render\EfxSheet.cpp" />
+    <ClCompile Include="src\bak2\render\EfxThumb.cpp" />
+    <ClCompile Include="src\bak2\render\PlayerDress.cpp" />
+    <ClCompile Include="src\bak2\render\RAssets.cpp" />
+    <ClCompile Include="src\bak2\render\RFormats.cpp" />
+    <ClCompile Include="src\bak2\render\RGif.cpp" />
+    <ClCompile Include="src\bak2\render\RImage.cpp" />
+    <ClCompile Include="src\bak2\render\RModel.cpp" />
+    <ClCompile Include="src\bak2\render\RPlayHost.cpp" />
+    <ClCompile Include="src\bak2\render\RScene.cpp" />
+    <ClCompile Include="src\bak2\render\RView.cpp" />
+    <ClCompile Include="src\bak2\render\SoftRaster.cpp" />
+    <ClCompile Include="src\bak2\skillplay\BsrClips.cpp">
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\skillplay\Describe.cpp">
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\skillplay\Diagnose.cpp">
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\skillplay\FxDb.cpp">
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\skillplay\Golden.cpp">
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\skillplay\Player.cpp">
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\skillplay\SideFx.cpp">
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak2\skillplay\Timeline.cpp">
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="src\bak2_edit.cpp" />
+    <ClCompile Include="src\bak2_skill.cpp" />
+    <ClCompile Include="src\bak2_tools.cpp" />
+    <ClCompile Include="src\bak2_view.cpp" />
+    <ClCompile Include="src\binary_info.cpp" />
+    <ClCompile Include="src\blowfish.cpp" />
+    <ClCompile Include="src\dds.cpp" />
+    <ClCompile Include="src\file_browser.cpp" />
+    <ClCompile Include="src\file_types.cpp" />
+    <ClCompile Include="src\i18n.cpp" />
+    <ClCompile Include="src\jmx_parse.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\model3d.cpp" />
+    <ClCompile Include="src\pk2_archive.cpp" />
+    <ClCompile Include="src\store.cpp" />
+    <ClCompile Include="src\text.cpp" />
+    <ClCompile Include="src\thirdparty\stb_vorbis.c">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_CRT_SECURE_NO_WARNINGS;_WINDOWS;STB_VORBIS_NO_STDIO;WIN32;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_CRT_SECURE_NO_WARNINGS;_WINDOWS;STB_VORBIS_NO_STDIO;WIN32;_DEBUG</PreprocessorDefinitions>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <CompileAs>CompileAsC</CompileAs>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\app.hpp" />
+    <ClInclude Include="src\bak\Common.h" />
+    <ClInclude Include="src\bak\core\AesCore.h" />
+    <ClInclude Include="src\bak\core\AssetCipherAes.h" />
+    <ClInclude Include="src\bak\core\AssetCipherGopro.h" />
+    <ClInclude Include="src\bak\core\AssetCipherProfiles.h" />
+    <ClInclude Include="src\bak\core\AssetCipherSailor.h" />
+    <ClInclude Include="src\bak\core\AssetCipherSbox.h" />
+    <ClInclude Include="src\bak\core\AssetCipherVsro.h" />
+    <ClInclude Include="src\bak\core\AssetCrypt.h" />
+    <ClInclude Include="src\bak\core\Blowfish.h" />
+    <ClInclude Include="src\bak\core\BlowfishTables.h" />
+    <ClInclude Include="src\bak\core\Config.h" />
+    <ClInclude Include="src\bak\core\FolderArchive.h" />
+    <ClInclude Include="src\bak\core\I18n.h" />
+    <ClInclude Include="src\bak\core\I18nLangs.h" />
+    <ClInclude Include="src\bak\core\IArchive.h" />
+    <ClInclude Include="src\bak\core\KeyFinder.h" />
+    <ClInclude Include="src\bak\core\KeyRing.h" />
+    <ClInclude Include="src\bak\core\L33tPayloadKey.h" />
+    <ClInclude Include="src\bak\core\Obfuscate.h" />
+    <ClInclude Include="src\bak\core\Pk2Archive.h" />
+    <ClInclude Include="src\bak\core\Pk2Types.h" />
+    <ClInclude Include="src\bak\core\Pk2v2Archive.h" />
+    <ClInclude Include="src\bak\core\Pk2v2Crypto.h" />
+    <ClInclude Include="src\bak\core\Pk2v2KeyTable.h" />
+    <ClInclude Include="src\bak\core\SailorKeyTable.h" />
+    <ClInclude Include="src\bak\core\SiblingArchives.h" />
+    <ClInclude Include="src\bak\core\VpArchive.h" />
+    <ClInclude Include="src\bak\core\VpCrypto.h" />
+    <ClInclude Include="src\bak\core\VpFormat.h" />
+    <ClInclude Include="src\bak\core\zstd.h" />
+    <ClInclude Include="src\bak\formats\AssetDeps.h" />
+    <ClInclude Include="src\bak\formats\AvatarSet.h" />
+    <ClInclude Include="src\bak\formats\Ban.h" />
+    <ClInclude Include="src\bak\formats\Bms.h" />
+    <ClInclude Include="src\bak\formats\Bmt.h" />
+    <ClInclude Include="src\bak\formats\Bsk.h" />
+    <ClInclude Include="src\bak\formats\Bsr.h" />
+    <ClInclude Include="src\bak\formats\ClientData.h" />
+    <ClInclude Include="src\bak\formats\Ddj.h" />
+    <ClInclude Include="src\bak\formats\DdsDecode.h" />
+    <ClInclude Include="src\bak\formats\Efp.h" />
+    <ClInclude Include="src\bak\formats\FormatId.h" />
+    <ClInclude Include="src\bak\formats\MapFiles.h" />
+    <ClInclude Include="src\bak\formats\Nif2dt.h" />
+    <ClInclude Include="src\bak\formats\TextFile.h" />
+    <ClInclude Include="src\bak\fx\EffectScene.h" />
+    <ClInclude Include="src\bak\fx\FxEmit.h" />
+    <ClInclude Include="src\bak\fx\FxSampler.h" />
+    <ClInclude Include="src\bak\fx\FxTransform.h" />
+    <ClInclude Include="src\bak\fx\FxWindow.h" />
+    <ClInclude Include="src\bak\preview\PreviewEngine.h" />
+    <ClInclude Include="src\bak\preview\PreviewTheme.h" />
+    <ClInclude Include="src\bak\render\GifWriter.h" />
+    <ClInclude Include="src\bak\render\Image.h" />
+    <ClInclude Include="src\bak\render\ImageIO.h" />
+    <ClInclude Include="src\bak\render\MeshView.h" />
+    <ClInclude Include="src\bak\render\Raster.h" />
+    <ClInclude Include="src\bak\render\SroPose.h" />
+    <ClInclude Include="src\bak_bridge.hpp" />
+    <ClInclude Include="src\bak2\client\Catalog.h" />
+    <ClInclude Include="src\bak2\client\ClientInfo.h" />
+    <ClInclude Include="src\bak2\client\KeyFinder.h" />
+    <ClInclude Include="src\bak2\client\Pk2Archive.h" />
+    <ClInclude Include="src\bak2\client\Pk2Crypto.h" />
+    <ClInclude Include="src\bak2\client\Vfs.h" />
+    <ClInclude Include="src\bak2\core\BlowfishTables.h" />
+    <ClInclude Include="src\bak2\core\Client.h" />
+    <ClInclude Include="src\bak2\core\Engine.h" />
+    <ClInclude Include="src\bak2\core\Enums.h" />
+    <ClInclude Include="src\bak2\core\List.h" />
+    <ClInclude Include="src\bak2\core\Ops.h" />
+    <ClInclude Include="src\bak2\core\Package.h" />
+    <ClInclude Include="src\bak2\core\Pk2.h" />
+    <ClInclude Include="src\bak2\core\Res.h" />
+    <ClInclude Include="src\bak2\core\SeModel.h" />
+    <ClInclude Include="src\bak2\core\SkillCrypt.h" />
+    <ClInclude Include="src\bak2\core\SkillKeyData.h" />
+    <ClInclude Include="src\bak2\core\Source.h" />
+    <ClInclude Include="src\bak2\core\Studio.h" />
+    <ClInclude Include="src\bak2\core\Table.h" />
+    <ClInclude Include="src\bak2\core\Text.h" />
+    <ClInclude Include="src\bak2\core\TextDiff.h" />
+    <ClInclude Include="src\bak2\ddj\DdjCodec.h" />
+    <ClInclude Include="src\bak2\ddj\Dxt.h" />
+    <ClInclude Include="src\bak2\ddj\IconImport.h" />
+    <ClInclude Include="src\bak2\ddj\ImageIo.h" />
+    <ClInclude Include="src\bak2\ddj\Portrait.h" />
+    <ClInclude Include="src\bak2\editor\EdAssets.h" />
+    <ClInclude Include="src\bak2\editor\EdColumnsGen.inc" />
+    <ClInclude Include="src\bak2\editor\EdCompare.h" />
+    <ClInclude Include="src\bak2\editor\EdDoc.h" />
+    <ClInclude Include="src\bak2\editor\EdHealth.h" />
+    <ClInclude Include="src\bak2\editor\EdHistory.h" />
+    <ClInclude Include="src\bak2\editor\EdLang.h" />
+    <ClInclude Include="src\bak2\editor\EdSchema.h" />
+    <ClInclude Include="src\bak2\editor\EdTemplates.h" />
+    <ClInclude Include="src\bak2\editor\EdValidate.h" />
+    <ClInclude Include="src\bak2\editor\EdVorbis.h" />
+    <ClInclude Include="src\bak2\efpwrite\EfpDoc.h" />
+    <ClInclude Include="src\bak2\efpwrite\EfpEdit.h" />
+    <ClInclude Include="src\bak2\efpwrite\EfpTexture.h" />
+    <ClInclude Include="src\bak2\efpwrite\EfpVariant.h" />
+    <ClInclude Include="src\bak2\glue\SkillGlue.h" />
+    <ClInclude Include="src\bak2\glue\TextMap.h" />
+    <ClInclude Include="src\bak2\render\Efp.h" />
+    <ClInclude Include="src\bak2\render\EfpSim.h" />
+    <ClInclude Include="src\bak2\render\EfxDraw.h" />
+    <ClInclude Include="src\bak2\render\EfxSheet.h" />
+    <ClInclude Include="src\bak2\render\EfxThumb.h" />
+    <ClInclude Include="src\bak2\render\PlayerDress.h" />
+    <ClInclude Include="src\bak2\render\RAssets.h" />
+    <ClInclude Include="src\bak2\render\RBytes.h" />
+    <ClInclude Include="src\bak2\render\RFormats.h" />
+    <ClInclude Include="src\bak2\render\RFrame.h" />
+    <ClInclude Include="src\bak2\render\RGif.h" />
+    <ClInclude Include="src\bak2\render\RImage.h" />
+    <ClInclude Include="src\bak2\render\RMath.h" />
+    <ClInclude Include="src\bak2\render\RModel.h" />
+    <ClInclude Include="src\bak2\render\RPlayHost.h" />
+    <ClInclude Include="src\bak2\render\RScene.h" />
+    <ClInclude Include="src\bak2\render\RView.h" />
+    <ClInclude Include="src\bak2\render\SoftRaster.h" />
+    <ClInclude Include="src\bak2\skillplay\Diagnose.h" />
+    <ClInclude Include="src\bak2\skillplay\Golden.h" />
+    <ClInclude Include="src\bak2\skillplay\ParamTags.inc" />
+    <ClInclude Include="src\bak2\skillplay\SideFx.h" />
+    <ClInclude Include="src\bak2\skillplay\SkillPlay.h" />
+    <ClInclude Include="src\bak2_edit.hpp" />
+    <ClInclude Include="src\bak2_skill.hpp" />
+    <ClInclude Include="src\bak2_tools.hpp" />
+    <ClInclude Include="src\bak2_view.hpp" />
+    <ClInclude Include="src\binary_info.hpp" />
+    <ClInclude Include="src\blowfish.hpp" />
+    <ClInclude Include="src\dds.hpp" />
+    <ClInclude Include="src\file_browser.hpp" />
+    <ClInclude Include="src\file_types.hpp" />
+    <ClInclude Include="src\i18n.hpp" />
+    <ClInclude Include="src\i18n\app.inc" />
+    <ClInclude Include="src\i18n\app2.inc" />
+    <ClInclude Include="src\i18n\archive.inc" />
+    <ClInclude Include="src\i18n\bak_bridge.inc" />
+    <ClInclude Include="src\i18n\bak2.inc" />
+    <ClInclude Include="src\i18n\binary_info.inc" />
+    <ClInclude Include="src\i18n\browser.inc" />
+    <ClInclude Include="src\i18n\core.inc" />
+    <ClInclude Include="src\jmx_parse.hpp" />
+    <ClInclude Include="src\model3d.hpp" />
+    <ClInclude Include="src\pk2_archive.hpp" />
+    <ClInclude Include="src\store.hpp" />
+    <ClInclude Include="src\text.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\app.manifest" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

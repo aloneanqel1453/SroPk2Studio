@@ -1,0 +1,39 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 25, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "release",
+      "displayName": "Release (Ninja, MSVC x64)",
+      "description": "bin\\SroPk2Studio.exe; intermediate files in obj\\cmake\\release. Run from a Visual Studio x64 developer prompt.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/obj/cmake/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "cl",
+        "CMAKE_CXX_COMPILER": "cl"
+      }
+    },
+    {
+      "name": "debug",
+      "inherits": "release",
+      "displayName": "Debug (Ninja, MSVC x64)",
+      "description": "bin\\Debug\\SroPk2Studio.exe; intermediate files in obj\\cmake\\debug.",
+      "binaryDir": "${sourceDir}/obj/cmake/debug",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+    },
+    {
+      "name": "tests",
+      "inherits": "release",
+      "displayName": "Release + console tests",
+      "description": "Also builds the test programs (obj\\cmake\\tests\\tests); they read the client in %SRO_CLIENT_DIR%.",
+      "binaryDir": "${sourceDir}/obj/cmake/tests",
+      "cacheVariables": { "SROPK2_BUILD_TESTS": "ON" }
+    }
+  ],
+  "buildPresets": [
+    { "name": "release", "configurePreset": "release" },
+    { "name": "debug", "configurePreset": "debug" },
+    { "name": "tests", "configurePreset": "tests" }
+  ]
+}
