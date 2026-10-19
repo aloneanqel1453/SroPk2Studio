@@ -141,6 +141,10 @@ build.bat     one-click Release build
 - [stb_vorbis](https://github.com/nothings/stb) — public domain / MIT (`src/thirdparty/stb_vorbis.c`).
 - [Zstandard](https://github.com/facebook/zstd) — BSD / GPLv2 (`src/bak/core/zstd.*`).
 
+### License
+
+[MIT](LICENSE). Third-party code keeps its own license (stb_vorbis: public domain / MIT, Zstandard: BSD / GPLv2).
+
 ---
 
 ## Türkçe
@@ -219,3 +223,7 @@ obj\cmake\tests\tests\pk2test.exe
 - **SRO Asset Studio** (`src/bak`) — arşivler, şifreler ve biçim çözücüleri.
 - **SkillEffect Studio** (`src/bak2`) — efekt ve model render, skill oynatma, EFP yazıcı, DDJ kodlayıcı, tablo araçları.
 - [stb_vorbis](https://github.com/nothings/stb) — public domain / MIT; [Zstandard](https://github.com/facebook/zstd) — BSD / GPLv2.
+
+### Lisans
+
+[MIT](LICENSE). Üçüncü taraf kod kendi lisansını korur (stb_vorbis: public domain / MIT, Zstandard: BSD / GPLv2).
